@@ -45,13 +45,9 @@ public class TechnologyManager implements TechologyService {
 
     @Override
     public void add(CreateTechnologyRequest createTechnologyRequest) throws Exception {
-        System.out.println("***************************************");
-        System.out.println(createTechnologyRequest.getLanguageId());
-        System.out.println("***************************************");
-
-        // if(isUnique(createTechnologyRequest.getTechnology())) {
-		//     throw new Exception	("this language technology is in list already.");
-		// }
+        if(isUnique(createTechnologyRequest.getTechnology())) {
+		    throw new Exception	("this language technology is in list already.");
+		}
 
         Technology technology = new Technology();
         Language language = new Language();
@@ -72,12 +68,12 @@ public class TechnologyManager implements TechologyService {
     public void update(UpdateTechnologyRequest updateTechnologyRequest, int id) throws Exception {
         Technology technology = this.technologyRepository.findById(id).get();
 
-        // if (updateTechnologyRequest.getName() == null || updateTechnologyRequest.getName().isEmpty()) {
-        //     throw new Exception("Name cannot be empty!");
-        // }
-        // else if (isUnique(technology.getName())) {
-        //     throw new Exception("Language registered!");
-        // }
+        if (updateTechnologyRequest.getName() == null || updateTechnologyRequest.getName().isEmpty()) {
+            throw new Exception("Name cannot be empty!");
+        }
+        else if (isUnique(updateTechnologyRequest.getName())) {
+            throw new Exception("Language registered!");
+        }
 
         technology.setName(updateTechnologyRequest.getName());
         this.technologyRepository.save(technology);
@@ -85,9 +81,7 @@ public class TechnologyManager implements TechologyService {
 
     @Override
     public void delete(DeleteTechnologyRequest deleteTechnologyRequest) {
-        System.out.println("****************** " + deleteTechnologyRequest.getId() + "**************");
         technologyRepository.deleteById(deleteTechnologyRequest.getId());
-        
     }
 
     private boolean isUnique(String langName){
